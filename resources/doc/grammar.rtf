@@ -1,0 +1,99 @@
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 What this is about\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 MicroWorld is a rule driven cellular automaton. What does that mean? Well, it\u8217's a two dimensional world made up of squares called {\b cells}. The world develops in steps, and at each step, each cell is modified by applying the rules.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 The demonstration world is a mountain, with snow at the top and the sea at the bottom. as you watched, you probably saw the bright green of grass on the lower slopes of the mountain turn to the darker green of forest. You may have seen some forest fires break out.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That\u8217's all controlled by rules. You make the rules. To start Noah\u8217's flood, {\field{\*\fldinst{HYPERLINK "rules"}}{\fldrslt{\ul
+go to the rules page
+}}}
+ now, and add this rule at the very top:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 if altitude is less than 200 then state should be water\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 then, {\field{\*\fldinst{HYPERLINK "world"}}{\fldrslt{\ul
+go and watch the world
+}}}
+ again. What happens? You should see water spread across everywhere except the very top of the mountain. But after the flood, the waters should drain away again. Go back to {\field{\*\fldinst{HYPERLINK "rules"}}{\fldrslt{\ul
+rules
+}}}
+ and add this rule at the very top:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 if altitude is more than 9 and state is water then state should be grassland\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now the world alternates between {\i new} and {\i grassland}. That\u8217's no good! Go back to {\field{\*\fldinst{HYPERLINK "rules"}}{\fldrslt{\ul
+rules
+}}}
+ and delete the rule that you first added - the one that says\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 if altitude is less than 200 then state should be water\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 And see! The world starts growing again.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 What you can do next\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Change some rules\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Change some of the other rules and see what happens. Very likely, one of the first things that will happen is that you will get a message like this:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 I did not understand 'if state is grassland then 1 chance in 10 state will be heath'\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 That means that you changed a rule in a way that the engine could no longer understand it. To find out what the engine will understand, have a look at the {\field{\*\fldinst{HYPERLINK "docs#grammar"}}{\fldrslt{\ul
+documentation
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Invent some rules of your own\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 What happens when people come into the world? Where would they make their first camp? Would they want to be near the water, so they could fish? Would they want be near fertile grassland, to graze their sheep and cattle?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Write a rule which adds some camps to the world}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 What happens to the land around a camp? Do the people burn down forest to make new grassland? Do they convert the grassland into meadow, or into crop?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Does growing crops reduce the soil fertility? What makes people decide that their camp is a good enough place to build a proper house?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Write some rules which describe this}\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 How many squares of meadow or crop does it take to feed each house full of people? What happens when there are too many houses and not enough fields? Can houses catch fire? What happens to a house which is next to a fire?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 How many houses do you need for a market place? Where would people build a harbour?\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Change the rules completely\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 I\u8217've provided rules which use the MicroWorld cellular automaton to make a simple model of the changes to land in Europe after the ice age. But you don\u8217't have to use it like that, at all.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Conway's_Game_of_Life"}}{\fldrslt{\ul
+Conway\u8217's Game of Life
+}}}
+ is one of the famous uses of a cellular automaton. The rules for the Game of Life are very simple. To set up your game of life you\u8217'll need some initialisation rules, one for every cell you want to start live (we\u8217'll use {\i black} for live, and {\i white} for dead):\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 if x is equal to 4 and y is equal to 4 and state is new then state should be black\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Add as many of these as you need for your starting pattern. Then add a rule, after all those:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 if state is new then state should be white\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 I\u8217'll leave you to work out what the rules of life are for yourself, from the Wiki page I linked to.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b CHEAT} {\i You\u8217'll find other rule sets you can explore if you go to the} {\i {\field{\*\fldinst{HYPERLINK "params"}}{\fldrslt{\ul
+Parameters
+}}}
+ page}.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs28 Change the engine\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you want to modify the engine itself, you will need {\field{\*\fldinst{HYPERLINK "https://github.com/technomancy/leiningen"}}{\fldrslt{\ul
+Leiningen
+}}}
+ 2.0 or above installed on your own computer, and you\u8217'll need to download the source, and unpack it.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You will find that there are three packages:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b mw-engine} deals with creating worlds, and transforming them;\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b mw-parser} deals with turning the rule language into something the engine can work on;\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\b mw-ui} is the web site which provides you with a user interface.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 For each of these packages, you need to run, in the root directory of the package, the following command:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 lein install\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Once you\u8217've done that, you\u8217'll have everything built. To start a web server for the application, run the following command in the {\i mw-ui} directory:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \f1 lein ring server\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Now you have it working, you can start changing things.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Add states\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Adding new states is easy: just add new tiles in {\i mw-ui/resources/public/img/tiles}. The tiles should be png (Portable Network Graphics) files, and should be 32 pixels square. The name of the tile should be the name of your new state. It\u8217's good to also edit the file {\i mw-ui/resources/public/css/states.css} to add a class for your new state.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Change the code\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Once you\u8217've done all that, you\u8217're ready to be really ambitious. Change the code. Implement some new feature I haven\u8217't thought of, or fix bugs I\u8217've accidentally left in.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 You\u8217'll need an editor. I recommend either {\field{\*\fldinst{HYPERLINK "https://nightcode.info/"}}{\fldrslt{\ul
+NightCode
+}}}
+, which is quite small and will run on a Raspberry Pi, or {\field{\*\fldinst{HYPERLINK "http://www.lighttable.com/"}}{\fldrslt{\ul
+LightTable
+}}}
+, which is extremely helpful but needs a more powerful computer.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 Worthwhile projects\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you would like to work on the engine, there\u8217's things that would be worth improving:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 1.\tx360\tab Better arithmetic in actions\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 2.\tx360\tab Better arithmetic in conditions - it would be useful to be able to say {\i \u8216'if generation is more than 64 - y then state should be snow\u8217'}. This would make the ice retreat in the right direction in the iceage rule set.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 3.\tx360\tab Better error messages when rules don\u8217't parse, explaining where the problem occured {\i (very hard)}.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 4.\tx360\tab Make this all work in ClojureScript in the browser, so there\u8217's less load on the server and one server can support more users {\i (quite hard)}.\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 5.\tx360\tab Optimisation: MicroWorld runs quite slowly, you can\u8217't really do big maps and one server won\u8217't support many users. There must be many ways performance can be improved.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If you make changes which you think improve MicroWorld, please {\field{\*\fldinst{HYPERLINK "mailto:simon@journeyman.cc"}}{\fldrslt{\ul
+mail them to me
+}}}
+.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Have fun!\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 License\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Copyright \u169? 2014-2023 {\field{\*\fldinst{HYPERLINK "mailto:simon@journeyman.cc"}}{\fldrslt{\ul
+Simon Brooke
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Distributed under the terms of the {\field{\*\fldinst{HYPERLINK "http://www.gnu.org/licenses/gpl-2.0.html"}}{\fldrslt{\ul
+GNU General Public License v2
+}}}
+\par}
+
