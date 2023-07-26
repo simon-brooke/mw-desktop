@@ -8,6 +8,9 @@
                                  scrollable separator show! tabbed-panel table text]])
   (:import [org.htmlcleaner CleanerProperties HtmlCleaner SimpleHtmlSerializer]))
 
+;; This is probably a dead end. Its performance is terrible; the fxui version looks
+;; much more promising.
+
 ;; OK, the basic idea here is we have a window divided vertically 
 ;; into two panes. The user can drag the division between the panes 
 ;; left and right. In the left pane is always the world; in the right, a 
