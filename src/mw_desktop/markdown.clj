@@ -1,23 +1,13 @@
 ;; lightly adapted from 
 ;; https://github.com/cljfx/cljfx/blob/master/examples/e20_markdown_editor.clj
-(ns mw-desktop.e20-markdown-editor
-  (:require [cljfx.api :as fx]
-            [clojure.core.cache :refer [lru-cache-factory]]
-            [clojure.java.io :refer [resource]]
-            [clojure.string :refer [join lower-case starts-with?]])
+(ns mw-desktop.markdown 
+  (:require [cljfx.api :refer [sub-ctx sub-val swap-context]]
+            [clojure.string :refer [join lower-case starts-with?]]) 
   (:import [java.awt Desktop]
            [java.io File]
            [java.net URI]
            [org.commonmark.node Node]
            [org.commonmark.parser Parser]))
-
-;; does not work any more :(
-#_(SvgImageLoaderFactory/install (PrimitiveDimensionProvider.))
-
-(def *context
-  (atom
-   (fx/create-context {:typed-text (slurp (resource "doc/grammar.md"))}
-                      #(lru-cache-factory % :threshold 4096))))
 
 (defn commonmark->clj [^Node node]
   (let [tag (->> node
@@ -49,7 +39,7 @@
 (defn node-sub [context]
   (-> (Parser/builder)
       .build
-      (.parse (fx/sub-val context :typed-text))
+      (.parse (sub-val context :typed-text))
       commonmark->clj))
 
 (defmulti handle-event :event/type)
@@ -58,7 +48,7 @@
   (prn e))
 
 (defmethod handle-event ::type-text [{:keys [fx/event fx/context]}]
-  {:context (fx/swap-context context assoc :typed-text event)})
+  {:context (swap-context context assoc :typed-text event)})
 
 (defmulti md->fx :tag)
 
@@ -235,38 +225,8 @@
                            {:fx/type md-view
                             :node node})}]})
 
-(defn note-input [{:keys [fx/context]}]
-  {:fx/type :text-area
-   :style-class "input"
-   :text (fx/sub-val context :typed-text)
-   :on-text-changed {:event/type ::type-text :fx/sync true}})
-
-(defn note-preview [{:keys [fx/context]}]
+(defn markdown-view [{:keys [fx/context]}]
   {:fx/type :scroll-pane
    :fit-to-width true
    :content {:fx/type md-view
-             :node (fx/sub-ctx context node-sub)}})
-
-(def app
-  (fx/create-app *context
-                 :event-handler handle-event
-                 :desc-fn (fn [_]
-                            {:fx/type :stage
-                             :showing true
-                             :width 960
-                             :height 540
-                             :scene {:fx/type :scene
-                                     :stylesheets #{"doc/markdown.css"}
-                                     :root {:fx/type :grid-pane
-                                            :padding 10
-                                            :hgap 10
-                                            :column-constraints [{:fx/type :column-constraints
-                                                                  :percent-width 100/2}
-                                                                 {:fx/type :column-constraints
-                                                                  :percent-width 100/2}]
-                                            :row-constraints [{:fx/type :row-constraints
-                                                               :percent-height 100}]
-                                            :children [{:fx/type note-input
-                                                        :grid-pane/column 0}
-                                                       {:fx/type note-preview
-                                                        :grid-pane/column 1}]}}})))
+             :node (sub-ctx context node-sub)}})

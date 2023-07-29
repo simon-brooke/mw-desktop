@@ -3,12 +3,7 @@
             [clojure.core.cache :refer [lru-cache-factory]]
             [clojure.java.io :refer [resource]]
             [clojure.string :refer [join lower-case starts-with?]]
-            [mw-desktop.state :refer [get-state state update-state!]])
-  (:import [java.awt Desktop]
-           [java.io File]
-           [java.net URI]
-           [org.commonmark.node Node]
-           [org.commonmark.parser Parser]))
+            [mw-desktop.state :refer [get-state state update-state!]]))
 
 ;; OK, the basic idea here is we have a window divided vertically 
 ;; into two panes. The user can drag the division between the panes 
@@ -56,6 +51,7 @@
 ;; 'piechart count group by state'
 ;; 
 ;; In which case you probably have one graph page per rule.
+
 (defn- tile-image [{:keys [url]}]
   {:fx/type :image-view
    :image {:url url
@@ -83,8 +79,7 @@
     :children (map (fn [cell]{:fx/type tile-image
                       :tile-pane/alignment :bottom-center
                       :url (resource (format "%s/%s.png" tileset (:state cell)))}) 
-                   (flatten world))
-    }))
+                   (flatten world))}))
 
 (defn root-view [{{:keys [world rules]} :state}]
   {:fx/type :stage
@@ -93,6 +88,15 @@
            :root {:fx/type :split-pane
                   :items [{:fx.type :scroll-pane
                            :content {:fx/type world-view}}]}}})
+
+
+(defmulti handle-event :event/type)
+
+(defmethod handle-event :default [e]
+  (prn e))
+
+(defmethod handle-event ::type-text [{:keys [fx/event fx/context]}]
+  {:context (fx/swap-context context assoc :typed-text event)})
 
 (defmulti event-handler 
   "Multi-method event handler cribbed from e12-interactive-development"
@@ -107,3 +111,12 @@
    :opts {:fx.opt/map-event-handler event-handler}))
 
 (fx/mount-renderer state renderer)
+
+;; (defn ui
+;;   [_config]
+;;   (update-state! :ui
+;;              (fx/create-app state
+;;                  :event-handler event-handler
+;;                  :desc-fn (fn [state]
+;;                             {:fx/type root-view
+;;                              :state state}))))

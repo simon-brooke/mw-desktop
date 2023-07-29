@@ -1,23 +1,24 @@
 (ns mw-desktop.state
   "Global state of the application."
-  (:require [mw-engine.utils :refer [member?]]
-            [mw-engine.world :refer [world?]])
+  (:require [mw-engine.world :refer [world?]]
+            [taoensso.timbre :refer [info]])
   (:import [clojure.lang Keyword]))
 
-(def valid-states
+(def valid-statuses
   #{:init :halted :halt-requested :running})
 
 (def state
   "Global state of the application."
-  (atom {:state :init}))
+  (atom {:status :init}))
 
 (defn get-state [^Keyword key]
   (@state key))
 
-(defn await-state
-  "Pause the current process until the global status is in the state `state-value`."
-  [state-value]
-  (while (not= (@state :state) state-value)
+(defn await-status
+  "Pause the current process until the global status is in the state `status-value`."
+  [status-value]
+  (while (not= (@state :status) status-value)
+    (info "Awaiting status %s" status-value)
     (Thread/sleep 10000)))
 
 (defn update-state!
@@ -34,15 +35,16 @@
     (when (and (:world deltas) (not (world? (:world deltas))))
       (throw (ex-info "Attempt to set an invalid world"
                       {:deltas deltas
-                       :state @state})))
-    ;; you can't change either the world or the rules while the engine is computing
-    ;; a new status for the world.
-    (when-not (= (@state :state) :init)
-      (when (or (member? (keys deltas) :world)
-              (member? (keys deltas) :rules))
-      (await-state :halted)) )
+                       :status @state})))
+    ;; you can't change either the world or the rules while the engine is 
+    ;; computing a new state for the world. 
+    (when (and (#{:world :rules} (keys deltas)) 
+               (#{:running :halt-requested} (@state :status))) 
+        (await-status :halted))
     (swap! state merge deltas)
-    (when (and (= (@state :state) :init)
-               (:world state)
-               (:rules state))
-      (swap! state merge {:state :halted}))))
+    ;; if we've got both a world and rules, and we're in state :init, we
+    ;; advance to state :halted
+    (when (and (= (@state :status) :init)
+               (:world @state)
+               (:rules @state))
+      (swap! state merge {:status :halted}))))
