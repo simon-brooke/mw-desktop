@@ -2,7 +2,7 @@
   (:require [clojure.string :refer [join]]
             [clojure.tools.cli :refer [parse-opts]]
             ;; [mw-desktop.fxui :refer [ui]]
-            [mw-desktop.io :refer [load-ruleset! load-world!]])
+            [mw-desktop.io :refer [load-ruleset! load-tileset! load-world!]])
   (:gen-class))
 
 (def defaults
