@@ -1,9 +1,9 @@
 (ns mw-desktop.fxui
   (:require [cljfx.api :as fx]
-            [clojure.core.cache :refer [lru-cache-factory]]
-            [clojure.java.io :refer [resource]]
-            [clojure.string :refer [join lower-case starts-with?]]
-            [mw-desktop.state :refer [get-state state update-state!]]))
+            [mw-desktop.state :refer [state]]
+            [mw-desktop.ui-components.documentation-browser :refer [doc-browser]]
+            [mw-desktop.ui-components.rule-editor :refer [rule-editor]]
+            [mw-desktop.ui-components.world-view :refer [world-view]]))
 
 ;; OK, the basic idea here is we have a window divided vertically 
 ;; into two panes. The user can drag the division between the panes 
@@ -52,43 +52,35 @@
 ;; 
 ;; In which case you probably have one graph page per rule.
 
-(defn- tile-image [{:keys [url]}]
-  {:fx/type :image-view
-   :image {:url url
-           :requested-width 20
-           :preserve-ratio true
-           :background-loading true}})
-
-(defn world-view [{:keys [world tileset]}]
-  ;; assumes that by the time we get here, a tileset is a clojure map
-  ;; in which the keys are the names of the tiles, without file extension, as
-  ;; keywords (i.e. they're states, from the point of view of the world), and
-  ;; in which the values are just java images (bitmaps), or else maps which
-  ;; wrap java images with some other related data for example dimensions.
-  (let [th (or (:height (first tileset)) 20)
-        tw (or (:width (first tileset)) 20)
-        cols (count (first world))
-        rows (count world)]
-   {:fx/type :tile-pane
-    :hgap 0
-    :pref-columns cols
-    :pref-rows rows
-    :pref-tile-height th
-    :pref-tile-width tw
-    :vgap 0
-    :children (map (fn [cell]{:fx/type tile-image
-                      :tile-pane/alignment :bottom-center
-                      :url (resource (format "%s/%s.png" tileset (:state cell)))}) 
-                   (flatten world))}))
-
-(defn root-view [{{:keys [world rules]} :state}]
+(defn root-view [{{:keys []} :state}]
   {:fx/type :stage
    :showing true
+   :title "MicroWorld"
    :scene {:fx/type :scene
+           :stylesheets #{"doc/markdown.css"}
            :root {:fx/type :split-pane
-                  :items [{:fx.type :scroll-pane
-                           :content {:fx/type world-view}}]}}})
-
+                  :items [{:fx/type :stack-pane
+                           :children [{:fx/type :scroll-pane
+                                       :content {:fx/type world-view}}
+                                      {:fx/type :label
+                                       :stack-pane/alignment :top-right
+                                       :stack-pane/margin 5
+                                       :max-width 300
+                                      ;;  :text status
+                                       }]}
+                          {:fx/type :tab-pane
+                           :tabs [;; {:fx/type :tab
+                                  ;;  :text "Rule Editor"
+                                  ;;  :closable false
+                                  ;;  :content rule-editor
+                                  ;;  :parse-errors (or parse-errors "No errors found")
+                                  ;;  :rules-file (or rules-file "Unnamed file")
+                                  ;;  :rules-src (or rules-src ";; enter your rules here")
+                                  ;;  }
+                                  {:fx/type :tab
+                                   :text "Help"
+                                   :closable false
+                                   :content doc-browser}]}]}}})
 
 (defmulti handle-event :event/type)
 
@@ -98,7 +90,7 @@
 (defmethod handle-event ::type-text [{:keys [fx/event fx/context]}]
   {:context (fx/swap-context context assoc :typed-text event)})
 
-(defmulti event-handler 
+(defmulti event-handler
   "Multi-method event handler cribbed from e12-interactive-development"
   :event/type)
 

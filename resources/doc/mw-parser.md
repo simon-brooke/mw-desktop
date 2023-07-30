@@ -54,7 +54,7 @@ all cells have x more than -1.
 If you are having problems because one of your rules isn't working, look to
 see whether there is another rule above it which is 'blocking' it.
 
-### <a name="grammar"></a>Grammar
+### Grammar
 
 #### Comments
 
@@ -77,7 +77,7 @@ In rules, _conditions_ is one of:
 + _condition_ and _conditions_
 + _condition_ or _conditions_
 
-Note that 'and' takes precedence over or, so
+Note that `and` takes precedence over `or`, so
 
     conditionA and conditionB or conditionC and conditionD
 
@@ -214,3 +214,5 @@ Copyright © 2014 [Simon Brooke](mailto:simon@journeyman.cc)
 
 Distributed under the terms of the
 [GNU General Public License v2](http://www.gnu.org/licenses/gpl-2.0.html)
+
+-----

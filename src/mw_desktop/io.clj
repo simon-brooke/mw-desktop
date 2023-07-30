@@ -34,8 +34,9 @@
    Where a file and resource with this `path` both exist, the file is 
    preferred. Updates global state. Returns the ruleset loaded."
   [path]
-  (let [rules (doall (compile (slurp (:stream (identify-resource path)))))]
-    (update-state! :rules rules)
+  (let [src (slurp (:stream (identify-resource path)))
+        rules (doall (compile src))]
+    (update-state! :rules rules :rules-file path :rules-src src) 
     rules))
 
 (defn assemble-tile-set
@@ -93,7 +94,7 @@
                         path)
                        (merge data {:path path})
                        any))))]
-    (if (world? world) (do (update-state! :world world) world)
+    (if (world? world) (do (update-state! :world world :world-file path) world)
         (throw (ex-info "Invalid world file?"
                         (merge data {:path path
                                      :data world}))))))
